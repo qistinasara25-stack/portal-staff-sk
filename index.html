@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* DESIGN GLASSMORPHISM */
+        /* --- DESIGN GLASSMORPHISM --- */
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -21,7 +21,7 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
@@ -29,78 +29,84 @@
             max-width: 500px;
             padding: 40px 30px;
             text-align: center;
-            position: relative;
         }
 
-        h2 { margin-bottom: 5px; color: #4a4a4a; }
-        p.subtitle { margin-top: 0; color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+        h2 { margin-bottom: 5px; color: #333; }
+        p.subtitle { margin-top: 0; color: #666; font-size: 0.9rem; margin-bottom: 25px; }
 
-        /* INPUT CARIAN */
-        .search-box { position: relative; margin-bottom: 25px; }
+        /* DROPDOWN STYLE */
+        .search-box { position: relative; margin-bottom: 20px; }
         
-        input {
+        select {
             width: 100%;
             padding: 15px 20px;
-            padding-right: 50px;
+            padding-right: 40px;
             border: 2px solid #e0e0e0;
             border-radius: 50px;
             font-size: 1rem;
             outline: none;
             box-sizing: border-box;
-            background: #f9f9f9;
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            bottom: 5px;
-            width: 45px;
-            background: #764ba2;
-            color: white;
-            border: none;
-            border-radius: 50%;
+            background: #fff;
+            transition: 0.3s;
             cursor: pointer;
-            font-size: 1.1rem;
+            appearance: none;
+            -webkit-appearance: none;
+            color: #444;
+        }
+        select:focus { border-color: #764ba2; box-shadow: 0 0 10px rgba(118,75,162,0.1); }
+
+        /* Custom Arrow Icon untuk Dropdown */
+        .dropdown-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #764ba2;
+            pointer-events: none;
         }
 
-        /* KAD PROFIL HASIL */
+        /* KAD HASIL */
         #resultCard {
             display: none;
             animation: slideUp 0.5s ease forwards;
             text-align: left;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
+        /* Gambar Bulat di Atas */
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
             border-radius: 50%;
             border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             display: block;
             margin: 0 auto 15px;
+            background-color: #eee;
         }
 
-        .teacher-name { text-align: center; font-size: 1.4rem; font-weight: 600; color: #333; margin: 10px 0 5px; }
-        .teacher-role { text-align: center; color: #764ba2; font-weight: 600; margin-bottom: 25px; display: block; }
+        .teacher-name { text-align: center; font-size: 1.5rem; font-weight: 700; color: #333; margin: 10px 0 5px; line-height: 1.2; }
+        .teacher-role { text-align: center; color: #764ba2; font-weight: 600; font-size: 1.1rem; margin-bottom: 30px; display: block; }
 
         .info-item {
-            display: flex; align-items: center; margin-bottom: 15px; padding: 10px;
-            background: #f4f6fc; border-radius: 10px;
+            display: flex; align-items: center; margin-bottom: 15px; padding: 12px;
+            background: #f8f9fc; border-radius: 12px;
+            border-left: 5px solid #764ba2;
         }
 
         .icon-box {
-            width: 40px; height: 40px; background: #e0e7ff; color: #667eea;
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            margin-right: 15px;
+            min-width: 40px; height: 40px; 
+            background: #e0e7ff; color: #667eea;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; font-size: 1.1rem;
         }
 
-        .info-content small { display: block; color: #888; font-size: 0.75rem; text-transform: uppercase; }
-        .info-content span { font-weight: 500; color: #444; }
+        .info-content { flex-grow: 1; }
+        .info-content small { display: block; color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .info-content span { font-weight: 500; color: #444; font-size: 1rem; display: block; line-height: 1.3; }
 
-        .error { color: #e74c3c; background: #fdecea; padding: 10px; border-radius: 8px; display: none; text-align: center; }
+        .loading-text { font-size: 0.9rem; color: #888; margin-bottom: 10px; display: none; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -109,34 +115,43 @@
 
 <div class="container">
     <h2>Portal Staff SK</h2>
-    <p class="subtitle">Masukkan No. Kad Pengenalan</p>
+    <p class="subtitle">Pilih Nama Guru Untuk Semakan</p>
+
+    <div id="loadingMsg" class="loading-text">Sedang memuatkan senarai nama...</div>
 
     <div class="search-box">
-        <input type="text" id="icInput" placeholder="Contoh: 880101..." onkeypress="if(event.key==='Enter') cariStaff()">
-        <button class="search-btn" onclick="cariStaff()"><i class="fas fa-search"></i></button>
+        <select id="namaDropdown" onchange="cariStaff()">
+            <option value="">-- Sila Pilih Nama Guru --</option>
+        </select>
+        <i class="fas fa-chevron-down dropdown-icon"></i>
     </div>
-
-    <div id="errorMessage" class="error">Tiada rekod dijumpai.</div>
 
     <div id="resultCard">
         <img id="pGambar" src="" class="profile-img" alt="Gambar Guru">
+        
         <h3 id="pNama" class="teacher-name">Nama Guru</h3>
+        
         <span id="pJawatan" class="teacher-role">Jawatan</span>
 
-        <div class="info-item"><div class="icon-box"><i class="fas fa-star"></i></div>
-            <div class="info-content"><small>Gred</small><span id="pGred">-</span></div></div>
+        <div class="info-item">
+            <div class="icon-box"><i class="fas fa-star"></i></div>
+            <div class="info-content"><small>Gred</small><span id="pGred">-</span></div>
+        </div>
         
-        <div class="info-item"><div class="icon-box"><i class="fas fa-book"></i></div>
-            <div class="info-content"><small>Opsyen</small><span id="pOpsyen">-</span></div></div>
+        <div class="info-item">
+            <div class="icon-box"><i class="fas fa-book-open"></i></div>
+            <div class="info-content"><small>Opsyen Dominan</small><span id="pOpsyen">-</span></div>
+        </div>
 
-        <div class="info-item"><div class="icon-box"><i class="fas fa-layer-group"></i></div>
-            <div class="info-content"><small>Dominan</small><span id="pDominan">-</span></div></div>
+        <div class="info-item">
+            <div class="icon-box"><i class="fas fa-id-badge"></i></div>
+            <div class="info-content"><small>ID Delima</small><span id="pIdDelima">-</span></div>
+        </div>
 
-        <div class="info-item"><div class="icon-box"><i class="fas fa-id-card"></i></div>
-            <div class="info-content"><small>ID Delima</small><span id="pIdDelima">-</span></div></div>
-
-        <div class="info-item"><div class="icon-box"><i class="fas fa-tasks"></i></div>
-            <div class="info-content"><small>Tugas Khas</small><span id="pTugas">-</span></div></div>
+        <div class="info-item">
+            <div class="icon-box"><i class="fas fa-tasks"></i></div>
+            <div class="info-content"><small>Tugas Khas</small><span id="pTugas">-</span></div>
+        </div>
     </div>
 </div>
 
@@ -144,44 +159,83 @@
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsvip67QwGzy2gu0coChpig9r2ZMzw6Hi6kHGnVh4m9woeC8IdZWm76AiT1kS2ugsWT3AIGNnatuBj/pub?output=csv';
     let staffData = [];
 
-    fetch(csvUrl).then(res => res.text()).then(data => {
-        const rows = data.split('\n');
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            if (cols.length > 1) {
-                staffData.push({
-                    nama: c(cols[0]), ic: c(cols[1]), jawatan: c(cols[2]),
-                    gred: c(cols[3]), opsyen: c(cols[4]), dominan: c(cols[5]),
-                    idDelima: c(cols[6]), tugas: c(cols[7]), gambar: c(cols[8])
-                });
-            }
-        }
-    });
+    document.getElementById('loadingMsg').style.display = 'block';
 
-    function c(text) { return text ? text.replace(/^"|"$/g, '').trim() : ''; }
+    fetch(csvUrl)
+        .then(res => res.text())
+        .then(data => {
+            const rows = data.split('\n');
+            for (let i = 1; i < rows.length; i++) {
+                const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                
+                if (cols.length > 1) {
+                    let namaBersih = cleanText(cols[0]);
+                    if (namaBersih) {
+                        staffData.push({
+                            nama: namaBersih,
+                            ic: cleanText(cols[1]),
+                            jawatan: cleanText(cols[2]),
+                            gred: cleanText(cols[3]),
+                            opsyen: cleanText(cols[4]),
+                            idDelima: cleanText(cols[5]),
+                            tugas: cleanText(cols[6]),
+                            gambar: cleanText(cols[7])
+                        });
+                    }
+                }
+            }
+
+            staffData.sort((a, b) => a.nama.localeCompare(b.nama));
+            populateDropdown();
+            document.getElementById('loadingMsg').style.display = 'none';
+        })
+        .catch(err => {
+            console.error('Error loading data:', err);
+            document.getElementById('loadingMsg').textContent = 'Gagal memuatkan data';
+        });
+
+    function cleanText(text) {
+        return text ? text.replace(/^"|"$/g, '').trim() : '';
+    }
+
+    function populateDropdown() {
+        const dropdown = document.getElementById('namaDropdown');
+        staffData.forEach(staff => {
+            const option = document.createElement('option');
+            option.value = staff.nama;
+            option.textContent = staff.nama;
+            dropdown.appendChild(option);
+        });
+    }
 
     function cariStaff() {
-        const input = document.getElementById('icInput').value.trim();
+        const selectedName = document.getElementById('namaDropdown').value;
         const card = document.getElementById('resultCard');
-        const err = document.getElementById('errorMessage');
         
-        card.style.display = 'none'; err.style.display = 'none';
-        
-        const staff = staffData.find(s => s.ic === input);
+        if (!selectedName) {
+            card.style.display = 'none';
+            return;
+        }
+
+        const staff = staffData.find(s => s.nama === selectedName);
+
         if (staff) {
             document.getElementById('pNama').textContent = staff.nama;
             document.getElementById('pJawatan').textContent = staff.jawatan;
-            document.getElementById('pGred').textContent = staff.gred;
-            document.getElementById('pOpsyen').textContent = staff.opsyen;
-            document.getElementById('pDominan').textContent = staff.dominan;
-            document.getElementById('pIdDelima').textContent = staff.idDelima;
-            document.getElementById('pTugas').textContent = staff.tugas;
-            document.getElementById('pGambar').src = staff.gambar || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            document.getElementById('pGred').textContent = staff.gred || '-';
+            document.getElementById('pOpsyen').textContent = staff.opsyen || '-';
+            document.getElementById('pIdDelima').textContent = staff.idDelima || '-';
+            document.getElementById('pTugas').textContent = staff.tugas || '-';
+            
+            const imgUrl = staff.gambar && staff.gambar.length > 5 
+                ? staff.gambar 
+                : 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            document.getElementById('pGambar').src = imgUrl;
+
             card.style.display = 'block';
-        } else {
-            err.style.display = 'block';
         }
     }
 </script>
+
 </body>
 </html>
