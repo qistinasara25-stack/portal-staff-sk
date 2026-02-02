@@ -18,8 +18,8 @@
         .teacher-name { font-size: 1.15rem; font-weight: 700; color: #333; line-height: 1.2; margin-bottom: 5px; }
         .teacher-role { color: #764ba2; font-weight: 600; font-size: 0.9rem; }
         
-        .tabs { display: flex; gap: 4px; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; }
-        .tab-btn { flex: 1; padding: 10px 2px; border: none; background: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; transition: 0.3s; }
+        .tabs { display: flex; gap: 3px; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; }
+        .tab-btn { flex: 1; padding: 10px 2px; border: none; background: none; font-size: 0.6rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; transition: 0.3s; white-space: nowrap; }
         .tab-btn.active { background: white; color: #764ba2; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         
         .tab-content { display: none; }
@@ -55,6 +55,7 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="bukaTab(event, 'Info')">Info Am</button>
+            <button class="tab-btn" onclick="bukaTab(event, 'Pengurusan')">Pengurusan</button>
             <button class="tab-btn" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
             <button class="tab-btn" onclick="bukaTab(event, 'HEM')">HEM</button>
             <button class="tab-btn" onclick="bukaTab(event, 'Koko')">Koko</button>
@@ -72,6 +73,13 @@
             <div class="info-item">
                 <div class="icon-box"><i class="fas fa-book-reader"></i></div>
                 <div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div>
+            </div>
+        </div>
+
+        <div id="Pengurusan" class="tab-content">
+            <div class="info-item">
+                <div class="icon-box"><i class="fas fa-sitemap"></i></div>
+                <div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusanTugas"></span></div>
             </div>
         </div>
 
@@ -133,11 +141,15 @@
             document.getElementById('pGred').textContent = g.gred;
             document.getElementById('pDelima').textContent = g.delima;
             document.getElementById('pOpsyen').textContent = g.opsyen;
+            
+            // Menggunakan data tugas yang sama buat masa ini (boleh diasingkan jika data sheet bertambah)
+            document.getElementById('pPengurusanTugas').textContent = g.tugas;
             document.getElementById('pKuriTugas').textContent = g.tugas; 
             document.getElementById('pHEM').textContent = g.tugas;
             document.getElementById('pKoko').textContent = g.tugas;
+            
             document.getElementById('pGambar').src = g.foto || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-            bukaTab({currentTarget: document.querySelector('.tab-btn')}, 'Info');
+            bukaTab(null, 'Info');
         }
     }
 
@@ -146,8 +158,14 @@
         for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
         const btns = document.getElementsByClassName("tab-btn");
         for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        
         document.getElementById(tabName).classList.add("active");
-        if(evt && evt.currentTarget) evt.currentTarget.classList.add("active");
+        
+        if (evt && evt.currentTarget) {
+            evt.currentTarget.classList.add("active");
+        } else {
+            document.querySelector('.tab-btn').classList.add("active");
+        }
     }
 </script>
 </body>
