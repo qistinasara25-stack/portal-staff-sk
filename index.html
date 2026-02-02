@@ -29,11 +29,16 @@
             padding: 30px 25px;
             text-align: center;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* --- LOGO & TAJUK --- */
+        /* --- HEADER (LOGO & TAJUK) --- */
+        #headerDepan {
+            transition: opacity 0.3s ease;
+        }
+
         .school-logo {
-            width: 100px;
+            width: 100px; /* Saiz Logo */
             height: auto;
             margin-bottom: 15px;
             display: block;
@@ -44,7 +49,7 @@
         h2 { 
             margin-bottom: 5px; 
             color: #333; 
-            font-size: 1.2rem;
+            font-size: 1.1rem; 
             font-weight: 700;
             line-height: 1.4;
             text-transform: uppercase;
@@ -79,7 +84,7 @@
         .tabs { display: flex; justify-content: space-between; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; }
         .tab-btn {
             flex: 1; padding: 8px 5px; border: none; background: none;
-            font-size: 0.75rem;
+            font-size: 0.75rem; 
             font-weight: 600; color: #777; cursor: pointer;
             border-radius: 8px; transition: 0.3s;
         }
@@ -110,10 +115,12 @@
 
 <div class="container">
     
-    <img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo" alt="Logo Sekolah">
-    
-    <h2>PORTAL GURU DAN STAFF<br>SEK. KEB. TELOK BEREMBANG</h2>
-    <p class="subtitle">Sistem Maklumat Digital</p>
+    <div id="headerDepan">
+        <img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo" alt="Logo Sekolah">
+        
+        <h2>PORTAL GURU DAN STAFF<br>SEK. KEB. TELOK BEREMBANG</h2>
+        <p class="subtitle">Sistem Maklumat Digital</p>
+    </div>
 
     <div id="loadingMsg" class="loading-text">Sedang memuatkan data...</div>
 
@@ -133,10 +140,10 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="bukaTab(event, 'Info')">Info Am</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'HEM')">HEM</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'Koko')">Koko</button>
+            <button class="tab-btn active" onclick="bukaTab('Info')">Info Am</button>
+            <button class="tab-btn" onclick="bukaTab('Kuri')">Kurikulum</button>
+            <button class="tab-btn" onclick="bukaTab('HEM')">HEM</button>
+            <button class="tab-btn" onclick="bukaTab('Koko')">Koko</button>
         </div>
 
         <div id="Info" class="tab-content active">
@@ -186,14 +193,14 @@
             const cols = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); 
             if (cols.length > 1 && c(cols[0])) {
                 staffData.push({
-                    nama: c(cols[0]),
-                    ic: c(cols[1]),
-                    jawatan: c(cols[2]),
-                    gred: c(cols[3]),
-                    opsyen: c(cols[4]),
-                    idDelima: c(cols[5]),
-                    tugas: c(cols[6]),
-                    gambar: c(cols[7])
+                    nama: c(cols[0]),       // Col A
+                    ic: c(cols[1]),         // Col B
+                    jawatan: c(cols[2]),    // Col C
+                    gred: c(cols[3]),       // Col D
+                    opsyen: c(cols[4]),     // Col E
+                    idDelima: c(cols[5]),   // Col F
+                    tugas: c(cols[6]),      // Col G
+                    gambar: c(cols[7])      // Col H
                 });
             }
         }
@@ -217,12 +224,22 @@
     function pilihGuru() {
         const selectedName = document.getElementById('namaDropdown').value;
         const card = document.getElementById('resultCard');
+        const header = document.getElementById('headerDepan'); // Ambil element Header
         
-        if (!selectedName) { card.style.display = 'none'; return; }
+        if (!selectedName) { 
+            // Kalau user pilih "Pilih Nama", tunjuk balik Logo
+            card.style.display = 'none'; 
+            header.style.display = 'block'; 
+            return; 
+        }
 
         const staff = staffData.find(s => s.nama === selectedName);
 
         if (staff) {
+            // SOROK HEADER (LOGO & TAJUK)
+            header.style.display = 'none';
+
+            // Masukkan data guru
             document.getElementById('pNama').textContent = staff.nama;
             document.getElementById('pIC').textContent = staff.ic;
             document.getElementById('pJawatan').textContent = staff.jawatan;
@@ -236,18 +253,18 @@
             document.getElementById('pTugasKoko').textContent = staff.tugas; 
 
             card.style.display = 'block';
-            bukaTab(event, 'Info');
+            bukaTab('Info');
         }
     }
 
-    function bukaTab(event, tabName) {
+    function bukaTab(tabName) {
         var i, x, tablinks;
         x = document.getElementsByClassName("tab-content");
-        for (i = 0; i < x.length; i++) { x[i].classList.remove("active"); }
+        for (i = 0; i < x.length; i++) { x[i].style.display = "none"; }
         tablinks = document.getElementsByClassName("tab-btn");
-        for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
-        document.getElementById(tabName).classList.add("active");
-        event.currentTarget.classList.add("active");
+        for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className += " active";
     }
 </script>
 
