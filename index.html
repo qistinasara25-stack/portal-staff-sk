@@ -29,9 +29,9 @@
         .tab-btn[data-tab="Pengurusan"] { background: #d4e3f7; color: #007bff; }
         .tab-btn[data-tab="Kuri"] { background: #f7d4e3; color: #d63384; }
         .tab-btn[data-tab="HEM"] { background: #d4f7f2; color: #17a2b8; }
-        .tab-btn[data-tab="Koko"] { background: #f7f1d4; color: #856404; }
+        .tab-btn[data-tab="Koku"] { background: #f7f1d4; color: #856404; }
 
-        /* KESAN BILA AKTIF (DITEKAN) */
+        /* KESAN BILA AKTIF */
         .tab-btn.active { opacity: 1; transform: scale(1.05); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-bottom: 3px solid currentColor; }
 
         .tab-content { display: none; }
@@ -42,7 +42,7 @@
         #Pengurusan .info-item { background: #f7faff; border-left-color: #007bff; }
         #Kuri .info-item { background: #fff7fa; border-left-color: #d63384; }
         #HEM .info-item { background: #f7fffe; border-left-color: #17a2b8; }
-        #Koko .info-item { background: #fffdf7; border-left-color: #856404; }
+        #Koku .info-item { background: #fffdf7; border-left-color: #856404; }
 
         .icon-box { margin-right: 15px; width: 25px; text-align: center; font-size: 1.1rem; margin-top: 3px; }
         .info-text small { display: block; font-size: 0.7rem; color: #999; text-transform: uppercase; font-weight: 600; }
@@ -76,7 +76,7 @@
             <button class="tab-btn" data-tab="Pengurusan" onclick="bukaTab(event, 'Pengurusan')">Pengurusan</button>
             <button class="tab-btn" data-tab="Kuri" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
             <button class="tab-btn" data-tab="HEM" onclick="bukaTab(event, 'HEM')">HEM</button>
-            <button class="tab-btn" data-tab="Koko" onclick="bukaTab(event, 'Koko')">Koko</button>
+            <button class="tab-btn" data-tab="Koku" onclick="bukaTab(event, 'Koku')">Koku</button>
         </div>
 
         <div id="Info" class="tab-content active">
@@ -97,8 +97,8 @@
             <div class="info-item"><div class="icon-box" style="color:#17a2b8"><i class="fas fa-heart"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
         </div>
 
-        <div id="Koko" class="tab-content">
-            <div class="info-item"><div class="icon-box" style="color:#856404"><i class="fas fa-running"></i></div><div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div></div>
+        <div id="Koku" class="tab-content">
+            <div class="info-item"><div class="icon-box" style="color:#856404"><i class="fas fa-running"></i></div><div class="info-text"><small>Tugas Khas (Koku)</small><span id="pKoku"></span></div></div>
         </div>
     </div>
 </div>
@@ -114,7 +114,7 @@
             if(cols.length > 1) {
                 dataGuru.push({
                     nama: c(cols[0]), jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
-                    tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoko: c(cols[9]), foto: c(cols[10])
+                    tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoku: c(cols[9]), foto: c(cols[10])
                 });
             }
         });
@@ -140,7 +140,7 @@
             document.getElementById('pPengurusan').innerHTML = formatT(g.tPeng);
             document.getElementById('pKuri').innerHTML = formatT(g.tKuri); 
             document.getElementById('pHEM').innerHTML = formatT(g.tHEM);
-            document.getElementById('pKoko').innerHTML = formatT(g.tKoko);
+            document.getElementById('pKoku').innerHTML = formatT(g.tKoku);
             
             let rawUrl = g.foto;
             let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
