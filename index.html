@@ -20,21 +20,23 @@
         .teacher-name { font-size: 1.2rem; font-weight: 700; color: #333; line-height: 1.2; text-transform: uppercase; }
         .teacher-role { color: #764ba2; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; }
         
-        /* TABS STYLE */
-        .tabs { display: flex; gap: 3px; margin: 20px 0; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
-        .tab-btn { flex: 1; padding: 10px 8px; border: none; background: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; white-space: nowrap; transition: 0.3s; }
+        /* GAYA TABS WARNA KEKAL */
+        .tabs { display: flex; gap: 5px; margin: 20px 0; background: #f8f9fa; padding: 8px; border-radius: 15px; overflow-x: auto; scrollbar-width: none; }
+        .tab-btn { flex: 1; padding: 10px 12px; border: none; font-size: 0.65rem; font-weight: 800; cursor: pointer; border-radius: 10px; white-space: nowrap; transition: 0.3s; opacity: 0.8; }
         
-        /* WARNA TAB AKTIF */
-        .tab-btn.active[data-tab="Info"] { background: #e0d4f7; color: #6f42c1; box-shadow: 0 2px 6px rgba(111, 66, 193, 0.2); }
-        .tab-btn.active[data-tab="Pengurusan"] { background: #d4e3f7; color: #007bff; box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2); }
-        .tab-btn.active[data-tab="Kuri"] { background: #f7d4e3; color: #d63384; box-shadow: 0 2px 6px rgba(214, 51, 132, 0.2); }
-        .tab-btn.active[data-tab="HEM"] { background: #d4f7f2; color: #17a2b8; box-shadow: 0 2px 6px rgba(23, 162, 184, 0.2); }
-        .tab-btn.active[data-tab="Koko"] { background: #f7f1d4; color: #856404; box-shadow: 0 2px 6px rgba(133, 100, 4, 0.2); }
+        /* WARNA SETIAP TAB */
+        .tab-btn[data-tab="Info"] { background: #e0d4f7; color: #6f42c1; }
+        .tab-btn[data-tab="Pengurusan"] { background: #d4e3f7; color: #007bff; }
+        .tab-btn[data-tab="Kuri"] { background: #f7d4e3; color: #d63384; }
+        .tab-btn[data-tab="HEM"] { background: #d4f7f2; color: #17a2b8; }
+        .tab-btn[data-tab="Koko"] { background: #f7f1d4; color: #856404; }
+
+        /* KESAN BILA AKTIF (DITEKAN) */
+        .tab-btn.active { opacity: 1; transform: scale(1.05); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-bottom: 3px solid currentColor; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: slideUp 0.3s; }
         
-        /* WARNA INFO ITEM IKUT TAB */
         .info-item { display: flex; align-items: flex-start; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
         #Info .info-item { background: #f9f7ff; border-left-color: #6f42c1; }
         #Pengurusan .info-item { background: #f7faff; border-left-color: #007bff; }
@@ -148,7 +150,6 @@
             } else if (rawUrl.length > 5) { finalImg = rawUrl; }
             document.getElementById('pGambar').src = finalImg;
 
-            // Reset ke tab pertama setiap kali pilih guru baru
             const firstBtn = document.querySelector('.tab-btn[data-tab="Info"]');
             bukaTab({ currentTarget: firstBtn }, 'Info');
         }
