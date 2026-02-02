@@ -8,22 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 20px; }
-        .container { background: rgba(255, 255, 255, 0.98); border-radius: 25px; box-shadow: 0 20px 45px rgba(0,0,0,0.3); width: 100%; max-width: 500px; padding: 35px 25px; text-align: center; }
+        
+        /* KOTAK BESAR SEKARANG WARNA PINK LEMBUT */
+        .container { 
+            background: #fff0f5; /* Soft Pink / Lavender Blush */
+            border-radius: 25px; 
+            box-shadow: 0 20px 45px rgba(0,0,0,0.3); 
+            width: 100%; 
+            max-width: 500px; 
+            padding: 35px 25px; 
+            text-align: center; 
+            border: 1px solid rgba(255, 182, 193, 0.5);
+        }
+
         .school-logo { width: 90px; margin-bottom: 10px; }
         h2 { color: #333; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 25px; line-height: 1.4; font-weight: 700; }
         
-        select { width: 100%; padding: 15px; border-radius: 18px; border: 2px solid #eee; margin-bottom: 30px; font-family: 'Poppins'; outline: none; font-weight: 600; background: #fafafa; }
+        select { width: 100%; padding: 15px; border-radius: 18px; border: 2px solid #ffdae0; margin-bottom: 30px; font-family: 'Poppins'; outline: none; font-weight: 600; background: #fff; color: #555; }
 
-        #resultCard { display: none; text-align: left; background: white; border-radius: 20px; padding: 15px; animation: fadeIn 0.5s; }
+        /* KAD HASIL JUGA IKUT TEMA PINK LEMBUT */
+        #resultCard { display: none; text-align: left; background: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 15px; animation: fadeIn 0.5s; }
         
-        /* Gambar Passport */
         .profile-header { text-align: center; margin-bottom: 25px; }
         .profile-img { width: 160px; height: 210px; border-radius: 12px; border: 6px solid #764ba2; object-fit: cover; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .teacher-name { font-size: 1.25rem; font-weight: 700; color: #333; text-transform: uppercase; }
         .teacher-role { color: #764ba2; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; }
 
-        /* Tabs Berwarna Kekal */
-        .tabs { display: flex; gap: 6px; margin: 25px 0; background: #f1f3f8; padding: 8px; border-radius: 18px; overflow-x: auto; scrollbar-width: none; }
+        .tabs { display: flex; gap: 6px; margin: 25px 0; background: rgba(255, 255, 255, 0.6); padding: 8px; border-radius: 18px; overflow-x: auto; scrollbar-width: none; }
         .tab-btn { flex: 1; padding: 12px 15px; border: none; font-size: 0.65rem; font-weight: 800; cursor: pointer; border-radius: 12px; white-space: nowrap; transition: 0.4s; }
         
         .tab-btn[data-tab="Info"] { background: #e0d4f7; color: #6f42c1; }
@@ -37,17 +48,16 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: slideUp 0.4s ease-out; }
         
-        /* KOTAK INFO DENGAN WARNA LEMBUT (GRADIENT) */
         .info-item { display: flex; align-items: center; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        /* Warna Latar Ikut Tab */
-        #Info .info-item { background: linear-gradient(135deg, #f9f7ff 0%, #e0d4f7 100%); border-left: 8px solid #6f42c1; }
-        #Pengurusan .info-item { background: linear-gradient(135deg, #f7faff 0%, #d4e3f7 100%); border-left: 8px solid #007bff; }
-        #Kuri .info-item { background: linear-gradient(135deg, #fff7fa 0%, #f7d4e3 100%); border-left: 8px solid #d63384; }
-        #HEM .info-item { background: linear-gradient(135deg, #f7fffe 0%, #d4f7f2 100%); border-left: 8px solid #17a2b8; }
-        #Koku .info-item { background: linear-gradient(135deg, #fffdf7 0%, #f7f1d4 100%); border-left: 8px solid #856404; }
+        /* Latar Belakang Kotak Kecil (Tetap Berwarna Ikut Tab) */
+        #Info .info-item { background: linear-gradient(135deg, #ffffff 0%, #e0d4f7 100%); border-left: 8px solid #6f42c1; }
+        #Pengurusan .info-item { background: linear-gradient(135deg, #ffffff 0%, #d4e3f7 100%); border-left: 8px solid #007bff; }
+        #Kuri .info-item { background: linear-gradient(135deg, #ffffff 0%, #f7d4e3 100%); border-left: 8px solid #d63384; }
+        #HEM .info-item { background: linear-gradient(135deg, #ffffff 0%, #d4f7f2 100%); border-left: 8px solid #17a2b8; }
+        #Koku .info-item { background: linear-gradient(135deg, #ffffff 0%, #f7f1d4 100%); border-left: 8px solid #856404; }
 
-        .icon-box { margin-right: 20px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.8); font-size: 1.3rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .icon-box { margin-right: 20px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white; font-size: 1.3rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .info-text small { display: block; font-size: 0.75rem; color: #666; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
         .info-text span { font-size: 1rem; font-weight: 700; color: #222; line-height: 1.4; }
 
@@ -83,7 +93,7 @@
         </div>
 
         <div id="Info" class="tab-content active">
-            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-star"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-award"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
             <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-envelope-open-text"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
             <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-book-bookmark"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
         </div>
@@ -107,7 +117,6 @@
 </div>
 
 <script>
-    // Link CSV & Fetch Data (Kekalkan yang Cikgu punya)
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsvip67QwGzy2gu0coChpig9r2ZMzw6Hi6kHGnVh4m9woeC8IdZWm76AiT1kS2ugsWT3AIGNnatuBj/pub?output=csv';
     let dataGuru = [];
 
