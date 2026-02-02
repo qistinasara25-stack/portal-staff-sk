@@ -14,21 +14,22 @@
         select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #e0e0e0; margin-bottom: 20px; font-family: 'Poppins'; outline: none; cursor: pointer; }
         #resultCard { display: none; text-align: left; background: white; border-radius: 15px; padding: 10px; animation: fadeIn 0.4s; }
         .profile-header { text-align: center; margin-bottom: 20px; }
-        .profile-img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #764ba2; object-fit: cover; margin-bottom: 10px; }
-        .teacher-name { font-size: 1.15rem; font-weight: 700; color: #333; line-height: 1.2; margin-bottom: 5px; }
-        .teacher-role { color: #764ba2; font-weight: 600; font-size: 0.9rem; }
+        .profile-img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #764ba2; object-fit: cover; margin-bottom: 10px; background: #eee; }
+        .teacher-name { font-size: 1.15rem; font-weight: 700; color: #333; line-height: 1.2; }
+        .teacher-role { color: #764ba2; font-weight: 600; font-size: 0.9rem; margin-top: 5px; display: block; }
         
-        .tabs { display: flex; gap: 3px; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; }
-        .tab-btn { flex: 1; padding: 10px 2px; border: none; background: none; font-size: 0.6rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; transition: 0.3s; white-space: nowrap; }
+        .tabs { display: flex; gap: 3px; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { flex: 1; padding: 10px 8px; border: none; background: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; white-space: nowrap; transition: 0.3s; }
         .tab-btn.active { background: white; color: #764ba2; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: slideUp 0.3s; }
         
-        .info-item { display: flex; align-items: center; padding: 12px; background: #f8f9fc; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
-        .icon-box { margin-right: 15px; color: #667eea; width: 25px; text-align: center; font-size: 1.1rem; }
+        .info-item { display: flex; align-items: flex-start; padding: 12px; background: #f8f9fc; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
+        .icon-box { margin-right: 15px; color: #667eea; width: 25px; text-align: center; font-size: 1.1rem; margin-top: 3px; }
         .info-text small { display: block; font-size: 0.7rem; color: #999; text-transform: uppercase; font-weight: 600; }
-        .info-text span { font-size: 0.85rem; font-weight: 500; color: #444; }
+        .info-text span { font-size: 0.85rem; font-weight: 500; color: #444; line-height: 1.5; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -43,7 +44,7 @@
     </div>
 
     <select id="namaDropdown" onchange="pilihGuru()">
-        <option value="">-- Pilih Nama Guru --</option>
+        <option value="">-- Pilih Nama Staff --</option>
     </select>
 
     <div id="resultCard">
@@ -62,46 +63,25 @@
         </div>
 
         <div id="Info" class="tab-content active">
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-star"></i></div>
-                <div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div>
-            </div>
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-envelope"></i></div>
-                <div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div>
-            </div>
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-book-reader"></i></div>
-                <div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div>
-            </div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-star"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-envelope"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-book-open"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
         </div>
 
         <div id="Pengurusan" class="tab-content">
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-sitemap"></i></div>
-                <div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusanTugas"></span></div>
-            </div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-sitemap"></i></div><div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusan"></span></div></div>
         </div>
 
         <div id="Kuri" class="tab-content">
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-edit"></i></div>
-                <div class="info-text"><small>Tugas Khas (Kuri)</small><span id="pKuriTugas"></span></div>
-            </div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-edit"></i></div><div class="info-text"><small>Tugas Khas (Kurikulum)</small><span id="pKuri"></span></div></div>
         </div>
 
         <div id="HEM" class="tab-content">
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-users-cog"></i></div>
-                <div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div>
-            </div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-users-cog"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
         </div>
 
         <div id="Koko" class="tab-content">
-            <div class="info-item">
-                <div class="icon-box"><i class="fas fa-trophy"></i></div>
-                <div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div>
-            </div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-trophy"></i></div><div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div></div>
         </div>
     </div>
 </div>
@@ -117,18 +97,24 @@
             if(cols.length > 1) {
                 dataGuru.push({
                     nama: c(cols[0]), jawatan: c(cols[2]), gred: c(cols[3]),
-                    opsyen: c(cols[4]), delima: c(cols[5]), tugas: c(cols[6]), foto: c(cols[7])
+                    opsyen: c(cols[4]), delima: c(cols[5]), 
+                    tPengurusan: c(cols[6]), tKuri: c(cols[7]), 
+                    tHEM: c(cols[8]), tKoko: c(cols[9]), foto: c(cols[10])
                 });
             }
         });
         dataGuru.sort((a,b) => a.nama.localeCompare(b.nama));
         const dd = document.getElementById('namaDropdown');
         dataGuru.forEach(g => { 
-            const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); 
+            const opt = document.createElement('option'); 
+            opt.value = g.nama; 
+            opt.textContent = g.nama; 
+            dd.appendChild(opt); 
         });
     });
 
     function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
+    const formatT = (t) => t ? t.replace(/\n/g, '<br>') : '-';
 
     function pilihGuru() {
         const sel = document.getElementById('namaDropdown').value;
@@ -142,14 +128,16 @@
             document.getElementById('pDelima').textContent = g.delima;
             document.getElementById('pOpsyen').textContent = g.opsyen;
             
-            // Menggunakan data tugas yang sama buat masa ini (boleh diasingkan jika data sheet bertambah)
-            document.getElementById('pPengurusanTugas').textContent = g.tugas;
-            document.getElementById('pKuriTugas').textContent = g.tugas; 
-            document.getElementById('pHEM').textContent = g.tugas;
-            document.getElementById('pKoko').textContent = g.tugas;
+            document.getElementById('pPengurusan').innerHTML = formatT(g.tPengurusan);
+            document.getElementById('pKuri').innerHTML = formatT(g.tKuri); 
+            document.getElementById('pHEM').innerHTML = formatT(g.tHEM);
+            document.getElementById('pKoko').innerHTML = formatT(g.tKoko);
             
             document.getElementById('pGambar').src = g.foto || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-            bukaTab(null, 'Info');
+            
+            // Reset ke tab pertama (Info Am)
+            const firstTab = document.querySelector('.tab-btn');
+            bukaTab({currentTarget: firstTab}, 'Info');
         }
     }
 
@@ -160,12 +148,7 @@
         for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
         
         document.getElementById(tabName).classList.add("active");
-        
-        if (evt && evt.currentTarget) {
-            evt.currentTarget.classList.add("active");
-        } else {
-            document.querySelector('.tab-btn').classList.add("active");
-        }
+        if(evt && evt.currentTarget) evt.currentTarget.classList.add("active");
     }
 </script>
 </body>
