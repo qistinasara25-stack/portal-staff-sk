@@ -1,25 +1,131 @@
-// Cari bahagian ini dalam kod Script cikgu dan gantikan:
-
-function pilihGuru() {
-    const sel = document.getElementById('namaDropdown').value;
-    const g = dataGuru.find(i => i.nama === sel);
-    if(g) {
-        // ... (kod nama, jawatan, gred dsb)
-
-        // MAGIC UNTUK GAMBAR:
-        let rawUrl = g.foto;
-        let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png'; // Gambar default
-
-        if (rawUrl.includes('drive.google.com')) {
-            // Ini akan automatik tukar link /view jadi link gambar
-            let fileId = rawUrl.split('/d/')[1].split('/')[0];
-            finalImg = `https://lh3.googleusercontent.com/d/${fileId}`;
-        } else if (rawUrl.length > 5) {
-            finalImg = rawUrl;
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Staff SKTB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 20px; }
+        .container { background: rgba(255, 255, 255, 0.98); border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 500px; padding: 30px 25px; text-align: center; }
+        .school-logo { width: 100px; margin-bottom: 15px; }
+        h2 { color: #333; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 20px; line-height: 1.4; }
+        select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #e0e0e0; margin-bottom: 20px; font-family: 'Poppins'; outline: none; }
+        #resultCard { display: none; text-align: left; background: white; border-radius: 15px; padding: 10px; animation: fadeIn 0.4s; }
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .profile-img { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #764ba2; object-fit: cover; margin-bottom: 10px; }
+        .teacher-name { font-size: 1.15rem; font-weight: 700; color: #333; line-height: 1.2; }
+        .teacher-role { color: #764ba2; font-weight: 600; font-size: 0.9rem; margin-top: 5px; display: block; }
+        .tabs { display: flex; gap: 3px; margin-bottom: 15px; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { flex: 1; padding: 10px 8px; border: none; background: none; font-size: 0.6rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; white-space: nowrap; }
+        .tab-btn.active { background: white; color: #764ba2; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.3s; }
+        .info-item { display: flex; align-items: flex-start; padding: 12px; background: #f8f9fc; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
+        .icon-box { margin-right: 15px; color: #667eea; width: 25px; text-align: center; font-size: 1.1rem; margin-top: 3px; }
+        .info-text small { display: block; font-size: 0.7rem; color: #999; text-transform: uppercase; font-weight: 600; }
+        .info-text span { font-size: 0.85rem; font-weight: 500; color: #444; line-height: 1.5; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="headerDepan">
+        <img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo">
+        <h2>PORTAL GURU DAN STAFF<br>SK TELOK BEREMBANG</h2>
+    </div>
+    <select id="namaDropdown" onchange="pilihGuru()">
+        <option value="">-- Pilih Nama Guru --</option>
+    </select>
+    <div id="resultCard">
+        <div class="profile-header">
+            <img id="pGambar" src="" class="profile-img">
+            <div id="pNama" class="teacher-name"></div>
+            <div id="pJawatan" class="teacher-role"></div>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="bukaTab(event, 'Info')">Info Am</button>
+            <button class="tab-btn" onclick="bukaTab(event, 'Pengurusan')">Pengurusan</button>
+            <button class="tab-btn" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
+            <button class="tab-btn" onclick="bukaTab(event, 'HEM')">HEM</button>
+            <button class="tab-btn" onclick="bukaTab(event, 'Koko')">Koko</button>
+        </div>
+        <div id="Info" class="tab-content active">
+            <div class="info-item"><div class="icon-box"><i class="fas fa-star"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-envelope"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
+            <div class="info-item"><div class="icon-box"><i class="fas fa-book-open"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
+        </div>
+        <div id="Pengurusan" class="tab-content">
+            <div class="info-item"><div class="icon-box"><i class="fas fa-sitemap"></i></div><div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusan"></span></div></div>
+        </div>
+        <div id="Kuri" class="tab-content">
+            <div class="info-item"><div class="icon-box"><i class="fas fa-edit"></i></div><div class="info-text"><small>Tugas Khas (Kurikulum)</small><span id="pKuri"></span></div></div>
+        </div>
+        <div id="HEM" class="tab-content">
+            <div class="info-item"><div class="icon-box"><i class="fas fa-users-cog"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
+        </div>
+        <div id="Koko" class="tab-content">
+            <div class="info-item"><div class="icon-box"><i class="fas fa-trophy"></i></div><div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div></div>
+        </div>
+    </div>
+</div>
+<script>
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsvip67QwGzy2gu0coChpig9r2ZMzw6Hi6kHGnVh4m9woeC8IdZWm76AiT1kS2ugsWT3AIGNnatuBj/pub?output=csv';
+    let dataGuru = [];
+    fetch(csvUrl).then(res => res.text()).then(csv => {
+        const rows = csv.split('\n').slice(1);
+        rows.forEach(row => {
+            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            if(cols.length > 1) {
+                dataGuru.push({
+                    nama: c(cols[0]), jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
+                    tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoko: c(cols[9]), foto: c(cols[10])
+                });
+            }
+        });
+        dataGuru.sort((a,b) => a.nama.localeCompare(b.nama));
+        const dd = document.getElementById('namaDropdown');
+        dataGuru.forEach(g => { const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); });
+    });
+    function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
+    function formatT(t) { return t ? t.replace(/\n/g, '<br>') : '-'; }
+    function pilihGuru() {
+        const sel = document.getElementById('namaDropdown').value;
+        const g = dataGuru.find(i => i.nama === sel);
+        if(g) {
+            document.getElementById('headerDepan').style.display = 'none';
+            document.getElementById('resultCard').style.display = 'block';
+            document.getElementById('pNama').textContent = g.nama;
+            document.getElementById('pJawatan').textContent = g.jawatan;
+            document.getElementById('pGred').textContent = g.gred;
+            document.getElementById('pDelima').textContent = g.delima;
+            document.getElementById('pOpsyen').textContent = g.opsyen;
+            document.getElementById('pPengurusan').innerHTML = formatT(g.tPeng);
+            document.getElementById('pKuri').innerHTML = formatT(g.tKuri); 
+            document.getElementById('pHEM').innerHTML = formatT(g.tHEM);
+            document.getElementById('pKoko').innerHTML = formatT(g.tKoko);
+            let rawUrl = g.foto;
+            let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            if (rawUrl.includes('drive.google.com')) {
+                let fileId = rawUrl.split('/d/')[1].split('/')[0];
+                finalImg = `https://lh3.googleusercontent.com/u/0/d/${fileId}`;
+            } else if (rawUrl.length > 5) { finalImg = rawUrl; }
+            document.getElementById('pGambar').src = finalImg;
+            bukaTab(null, 'Info');
         }
-
-        document.getElementById('pGambar').src = finalImg;
-        
-        // ... (kod bukaTab)
     }
-}
+    function bukaTab(evt, tabName) {
+        const contents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+        const btns = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        document.getElementById(tabName).classList.add("active");
+        if(evt && evt.currentTarget) { evt.currentTarget.classList.add("active"); } 
+        else { document.querySelector('.tab-btn').classList.add("active"); }
+    }
+</script>
+</body>
+</html>
