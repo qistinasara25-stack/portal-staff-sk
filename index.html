@@ -11,35 +11,38 @@
         .container { background: rgba(255, 255, 255, 0.98); border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 500px; padding: 30px 25px; text-align: center; }
         .school-logo { width: 100px; margin-bottom: 15px; }
         h2 { color: #333; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 20px; line-height: 1.4; }
-        select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #e0e0e0; margin-bottom: 25px; font-family: 'Poppins'; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid #e0e0e0; margin-bottom: 25px; font-family: 'Poppins'; outline: none; }
         
         #resultCard { display: none; text-align: left; background: white; border-radius: 15px; padding: 10px; animation: fadeIn 0.4s; }
         
-        /* GAYA GAMBAR PASSPORT */
         .profile-header { text-align: center; margin-bottom: 20px; }
-        .profile-img { 
-            width: 160px; /* Saiz lebih besar */
-            height: 200px; /* Nisbah Passport */
-            border-radius: 10px; /* Segi empat bucu bulat sikit */
-            border: 5px solid #764ba2; 
-            object-fit: cover; 
-            margin-bottom: 15px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-        }
-        
+        .profile-img { width: 160px; height: 200px; border-radius: 10px; border: 5px solid #764ba2; object-fit: cover; margin-bottom: 15px; box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
         .teacher-name { font-size: 1.2rem; font-weight: 700; color: #333; line-height: 1.2; text-transform: uppercase; }
-        .teacher-role { color: #764ba2; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; letter-spacing: 0.5px; }
+        .teacher-role { color: #764ba2; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; }
         
+        /* TABS STYLE */
         .tabs { display: flex; gap: 3px; margin: 20px 0; background: #f0f2f5; padding: 5px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
         .tab-btn { flex: 1; padding: 10px 8px; border: none; background: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; border-radius: 8px; color: #777; white-space: nowrap; transition: 0.3s; }
-        .tab-btn.active { background: white; color: #764ba2; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         
+        /* WARNA TAB AKTIF */
+        .tab-btn.active[data-tab="Info"] { background: #e0d4f7; color: #6f42c1; box-shadow: 0 2px 6px rgba(111, 66, 193, 0.2); }
+        .tab-btn.active[data-tab="Pengurusan"] { background: #d4e3f7; color: #007bff; box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2); }
+        .tab-btn.active[data-tab="Kuri"] { background: #f7d4e3; color: #d63384; box-shadow: 0 2px 6px rgba(214, 51, 132, 0.2); }
+        .tab-btn.active[data-tab="HEM"] { background: #d4f7f2; color: #17a2b8; box-shadow: 0 2px 6px rgba(23, 162, 184, 0.2); }
+        .tab-btn.active[data-tab="Koko"] { background: #f7f1d4; color: #856404; box-shadow: 0 2px 6px rgba(133, 100, 4, 0.2); }
+
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: slideUp 0.3s; }
         
-        .info-item { display: flex; align-items: flex-start; padding: 12px; background: #f8f9fc; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
-        .icon-box { margin-right: 15px; color: #667eea; width: 25px; text-align: center; font-size: 1.1rem; margin-top: 3px; }
+        /* WARNA INFO ITEM IKUT TAB */
+        .info-item { display: flex; align-items: flex-start; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid #764ba2; }
+        #Info .info-item { background: #f9f7ff; border-left-color: #6f42c1; }
+        #Pengurusan .info-item { background: #f7faff; border-left-color: #007bff; }
+        #Kuri .info-item { background: #fff7fa; border-left-color: #d63384; }
+        #HEM .info-item { background: #f7fffe; border-left-color: #17a2b8; }
+        #Koko .info-item { background: #fffdf7; border-left-color: #856404; }
+
+        .icon-box { margin-right: 15px; width: 25px; text-align: center; font-size: 1.1rem; margin-top: 3px; }
         .info-text small { display: block; font-size: 0.7rem; color: #999; text-transform: uppercase; font-weight: 600; }
         .info-text span { font-size: 0.9rem; font-weight: 600; color: #444; line-height: 1.5; }
 
@@ -67,33 +70,33 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="bukaTab(event, 'Info')">Info Am</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'Pengurusan')">Pengurusan</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'HEM')">HEM</button>
-            <button class="tab-btn" onclick="bukaTab(event, 'Koko')">Koko</button>
+            <button class="tab-btn active" data-tab="Info" onclick="bukaTab(event, 'Info')">Info Am</button>
+            <button class="tab-btn" data-tab="Pengurusan" onclick="bukaTab(event, 'Pengurusan')">Pengurusan</button>
+            <button class="tab-btn" data-tab="Kuri" onclick="bukaTab(event, 'Kuri')">Kurikulum</button>
+            <button class="tab-btn" data-tab="HEM" onclick="bukaTab(event, 'HEM')">HEM</button>
+            <button class="tab-btn" data-tab="Koko" onclick="bukaTab(event, 'Koko')">Koko</button>
         </div>
 
         <div id="Info" class="tab-content active">
-            <div class="info-item"><div class="icon-box"><i class="fas fa-award"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
-            <div class="info-item"><div class="icon-box"><i class="fas fa-id-card"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
-            <div class="info-item"><div class="icon-box"><i class="fas fa-book"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-award"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-id-card"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-book"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
         </div>
 
         <div id="Pengurusan" class="tab-content">
-            <div class="info-item"><div class="icon-box"><i class="fas fa-sitemap"></i></div><div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusan"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#007bff"><i class="fas fa-sitemap"></i></div><div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusan"></span></div></div>
         </div>
 
         <div id="Kuri" class="tab-content">
-            <div class="info-item"><div class="icon-box"><i class="fas fa-graduation-cap"></i></div><div class="info-text"><small>Tugas Khas (Kurikulum)</small><span id="pKuri"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#d63384"><i class="fas fa-graduation-cap"></i></div><div class="info-text"><small>Tugas Khas (Kurikulum)</small><span id="pKuri"></span></div></div>
         </div>
 
         <div id="HEM" class="tab-content">
-            <div class="info-item"><div class="icon-box"><i class="fas fa-heart"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#17a2b8"><i class="fas fa-heart"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
         </div>
 
         <div id="Koko" class="tab-content">
-            <div class="info-item"><div class="icon-box"><i class="fas fa-running"></i></div><div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div></div>
+            <div class="info-item"><div class="icon-box" style="color:#856404"><i class="fas fa-running"></i></div><div class="info-text"><small>Tugas Khas (Koko)</small><span id="pKoko"></span></div></div>
         </div>
     </div>
 </div>
@@ -132,22 +135,22 @@
             document.getElementById('pGred').textContent = g.gred;
             document.getElementById('pDelima').textContent = g.delima;
             document.getElementById('pOpsyen').textContent = g.opsyen;
-            
             document.getElementById('pPengurusan').innerHTML = formatT(g.tPeng);
             document.getElementById('pKuri').innerHTML = formatT(g.tKuri); 
             document.getElementById('pHEM').innerHTML = formatT(g.tHEM);
             document.getElementById('pKoko').innerHTML = formatT(g.tKoko);
             
-            // MAGIC GAMBAR
             let rawUrl = g.foto;
             let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
             if (rawUrl.includes('drive.google.com')) {
                 let fileId = rawUrl.split('/d/')[1].split('/')[0];
                 finalImg = `https://lh3.googleusercontent.com/d/${fileId}`;
             } else if (rawUrl.length > 5) { finalImg = rawUrl; }
-            
             document.getElementById('pGambar').src = finalImg;
-            bukaTab(null, 'Info');
+
+            // Reset ke tab pertama setiap kali pilih guru baru
+            const firstBtn = document.querySelector('.tab-btn[data-tab="Info"]');
+            bukaTab({ currentTarget: firstBtn }, 'Info');
         }
     }
 
@@ -156,9 +159,11 @@
         for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
         const btns = document.getElementsByClassName("tab-btn");
         for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+        
         document.getElementById(tabName).classList.add("active");
-        if(evt && evt.currentTarget) { evt.currentTarget.classList.add("active"); } 
-        else { document.querySelector('.tab-btn').classList.add("active"); }
+        if(evt && evt.currentTarget) {
+            evt.currentTarget.classList.add("active");
+        }
     }
 </script>
 </body>
