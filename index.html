@@ -7,83 +7,58 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 20px; }
-        
-        /* KOTAK BESAR SEKARANG WARNA PINK LEMBUT */
-        .container { 
-            background: #fff0f5; /* Soft Pink / Lavender Blush */
-            border-radius: 25px; 
-            box-shadow: 0 20px 45px rgba(0,0,0,0.3); 
-            width: 100%; 
-            max-width: 500px; 
-            padding: 35px 25px; 
-            text-align: center; 
-            border: 1px solid rgba(255, 182, 193, 0.5);
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 20px; }
+        .container { background-color: #fff0f5 !important; border-radius: 25px !important; box-shadow: 0 20px 45px rgba(0,0,0,0.3) !important; width: 100%; max-width: 500px; padding: 35px 25px; text-align: center; border: 2px solid #ffdae0 !important; }
         .school-logo { width: 90px; margin-bottom: 10px; }
-        h2 { color: #333; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 25px; line-height: 1.4; font-weight: 700; }
-        
-        select { width: 100%; padding: 15px; border-radius: 18px; border: 2px solid #ffdae0; margin-bottom: 30px; font-family: 'Poppins'; outline: none; font-weight: 600; background: #fff; color: #555; }
-
-        /* KAD HASIL JUGA IKUT TEMA PINK LEMBUT */
-        #resultCard { display: none; text-align: left; background: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 15px; animation: fadeIn 0.5s; }
-        
+        h2 { color: #333 !important; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 25px; line-height: 1.4; font-weight: 700; }
+        select { width: 100%; padding: 15px; border-radius: 18px; border: 2px solid #ffdae0; margin-bottom: 30px; font-family: 'Poppins'; font-weight: 600; background: #ffffff !important; }
+        #resultCard { display: none; text-align: left; background: rgba(255, 255, 255, 0.3) !important; border-radius: 20px; padding: 15px; }
         .profile-header { text-align: center; margin-bottom: 25px; }
         .profile-img { width: 160px; height: 210px; border-radius: 12px; border: 6px solid #764ba2; object-fit: cover; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .teacher-name { font-size: 1.25rem; font-weight: 700; color: #333; text-transform: uppercase; }
-        .teacher-role { color: #764ba2; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; }
-
-        .tabs { display: flex; gap: 6px; margin: 25px 0; background: rgba(255, 255, 255, 0.6); padding: 8px; border-radius: 18px; overflow-x: auto; scrollbar-width: none; }
-        .tab-btn { flex: 1; padding: 12px 15px; border: none; font-size: 0.65rem; font-weight: 800; cursor: pointer; border-radius: 12px; white-space: nowrap; transition: 0.4s; }
-        
+        .teacher-name { font-size: 1.25rem; font-weight: 700; color: #333 !important; text-transform: uppercase; }
+        .teacher-role { color: #764ba2 !important; font-weight: 700; font-size: 0.95rem; margin-top: 5px; display: block; }
+        .tabs { display: flex; gap: 6px; margin: 25px 0; background: rgba(255, 255, 255, 0.5); padding: 8px; border-radius: 18px; overflow-x: auto; scrollbar-width: none; }
+        .tab-btn { flex: 1; padding: 10px 12px; border: none; font-size: 0.65rem; font-weight: 800; cursor: pointer; border-radius: 12px; white-space: nowrap; transition: 0.4s; }
         .tab-btn[data-tab="Info"] { background: #e0d4f7; color: #6f42c1; }
         .tab-btn[data-tab="Pengurusan"] { background: #d4e3f7; color: #007bff; }
         .tab-btn[data-tab="Kuri"] { background: #f7d4e3; color: #d63384; }
         .tab-btn[data-tab="HEM"] { background: #d4f7f2; color: #17a2b8; }
         .tab-btn[data-tab="Koku"] { background: #f7f1d4; color: #856404; }
-
         .tab-btn.active { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); border-bottom: 4px solid currentColor; opacity: 1; }
-
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideUp 0.4s ease-out; }
-        
-        .info-item { display: flex; align-items: center; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .tab-content.active { display: block; }
 
-        /* Latar Belakang Kotak Kecil (Tetap Berwarna Ikut Tab) */
-        #Info .info-item { background: linear-gradient(135deg, #ffffff 0%, #e0d4f7 100%); border-left: 8px solid #6f42c1; }
-        #Pengurusan .info-item { background: linear-gradient(135deg, #ffffff 0%, #d4e3f7 100%); border-left: 8px solid #007bff; }
-        #Kuri .info-item { background: linear-gradient(135deg, #ffffff 0%, #f7d4e3 100%); border-left: 8px solid #d63384; }
-        #HEM .info-item { background: linear-gradient(135deg, #ffffff 0%, #d4f7f2 100%); border-left: 8px solid #17a2b8; }
-        #Koku .info-item { background: linear-gradient(135deg, #ffffff 0%, #f7f1d4 100%); border-left: 8px solid #856404; }
+        /* GAYA KOTAK (BAR) JAWATAN */
+        .info-item { display: flex; align-items: center; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); animation: slideIn 0.3s ease; }
+        
+        .info-item.color-Info { background: linear-gradient(135deg, #ffffff 0%, #e0d4f7 100%); border-left: 8px solid #6f42c1; }
+        .info-item.color-Pengurusan { background: linear-gradient(135deg, #ffffff 0%, #d4e3f7 100%); border-left: 8px solid #007bff; }
+        .info-item.color-Kuri { background: linear-gradient(135deg, #ffffff 0%, #f7d4e3 100%); border-left: 8px solid #d63384; }
+        .info-item.color-HEM { background: linear-gradient(135deg, #ffffff 0%, #d4f7f2 100%); border-left: 8px solid #17a2b8; }
+        .info-item.color-Koku { background: linear-gradient(135deg, #ffffff 0%, #f7f1d4 100%); border-left: 8px solid #856404; }
 
         .icon-box { margin-right: 20px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white; font-size: 1.3rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .info-text small { display: block; font-size: 0.75rem; color: #666; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
         .info-text span { font-size: 1rem; font-weight: 700; color: #222; line-height: 1.4; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div id="headerDepan">
         <img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo">
         <h2>PORTAL GURU DAN STAFF<br>SK TELOK BEREMBANG</h2>
     </div>
-
     <select id="namaDropdown" onchange="pilihGuru()">
         <option value="">-- PILIH NAMA GURU --</option>
     </select>
-
     <div id="resultCard">
         <div class="profile-header">
             <img id="pGambar" src="" class="profile-img">
             <div id="pNama" class="teacher-name"></div>
             <div id="pJawatan" class="teacher-role"></div>
         </div>
-
         <div class="tabs">
             <button class="tab-btn active" data-tab="Info" onclick="bukaTab(event, 'Info')">INFO AM</button>
             <button class="tab-btn" data-tab="Pengurusan" onclick="bukaTab(event, 'Pengurusan')">PENGURUSAN</button>
@@ -91,35 +66,16 @@
             <button class="tab-btn" data-tab="HEM" onclick="bukaTab(event, 'HEM')">HEM</button>
             <button class="tab-btn" data-tab="Koku" onclick="bukaTab(event, 'Koku')">KOKU</button>
         </div>
-
-        <div id="Info" class="tab-content active">
-            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-award"></i></div><div class="info-text"><small>Gred Jawatan</small><span id="pGred"></span></div></div>
-            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-envelope-open-text"></i></div><div class="info-text"><small>ID Delima</small><span id="pDelima"></span></div></div>
-            <div class="info-item"><div class="icon-box" style="color:#6f42c1"><i class="fas fa-book-bookmark"></i></div><div class="info-text"><small>Opsyen Dominan</small><span id="pOpsyen"></span></div></div>
-        </div>
-
-        <div id="Pengurusan" class="tab-content">
-            <div class="info-item"><div class="icon-box" style="color:#007bff"><i class="fas fa-sitemap"></i></div><div class="info-text"><small>Tugas Khas (Pengurusan)</small><span id="pPengurusan"></span></div></div>
-        </div>
-
-        <div id="Kuri" class="tab-content">
-            <div class="info-item"><div class="icon-box" style="color:#d63384"><i class="fas fa-graduation-cap"></i></div><div class="info-text"><small>Tugas Khas (Kurikulum)</small><span id="pKuri"></span></div></div>
-        </div>
-
-        <div id="HEM" class="tab-content">
-            <div class="info-item"><div class="icon-box" style="color:#17a2b8"><i class="fas fa-hand-holding-heart"></i></div><div class="info-text"><small>Tugas Khas (HEM)</small><span id="pHEM"></span></div></div>
-        </div>
-
-        <div id="Koku" class="tab-content">
-            <div class="info-item"><div class="icon-box" style="color:#856404"><i class="fas fa-running"></i></div><div class="info-text"><small>Tugas Khas (Koku)</small><span id="pKoku"></span></div></div>
-        </div>
+        <div id="Info" class="tab-content active"></div>
+        <div id="Pengurusan" class="tab-content"></div>
+        <div id="Kuri" class="tab-content"></div>
+        <div id="HEM" class="tab-content"></div>
+        <div id="Koku" class="tab-content"></div>
     </div>
 </div>
-
 <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsvip67QwGzy2gu0coChpig9r2ZMzw6Hi6kHGnVh4m9woeC8IdZWm76AiT1kS2ugsWT3AIGNnatuBj/pub?output=csv';
     let dataGuru = [];
-
     fetch(csvUrl).then(res => res.text()).then(csv => {
         const rows = csv.split('\n').slice(1);
         rows.forEach(row => {
@@ -135,9 +91,23 @@
         const dd = document.getElementById('namaDropdown');
         dataGuru.forEach(g => { const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); });
     });
-
     function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
-    function formatT(t) { return t ? t.replace(/\n/g, '<br>') : '-'; }
+
+    // FUNGSI CIPTA KOTAK BARU UNTUK SETIAP JAWATAN:
+    function buatBar(tajuk, teks, icon, tabName) {
+        if(!teks || teks === '-') return '';
+        const listTeks = teks.split('\n'); // Pecahkan ikut baris baru (Alt+Enter)
+        let html = '';
+        listTeks.forEach(item => {
+            if(item.trim() !== ""){
+                html += `<div class="info-item color-${tabName}">
+                    <div class="icon-box"><i class="fas ${icon}"></i></div>
+                    <div class="info-text"><small>${tajuk}</small><span>${item}</span></div>
+                </div>`;
+            }
+        });
+        return html;
+    }
 
     function pilihGuru() {
         const sel = document.getElementById('namaDropdown').value;
@@ -147,14 +117,19 @@
             document.getElementById('resultCard').style.display = 'block';
             document.getElementById('pNama').textContent = g.nama;
             document.getElementById('pJawatan').textContent = g.jawatan;
-            document.getElementById('pGred').textContent = g.gred;
-            document.getElementById('pDelima').textContent = g.delima;
-            document.getElementById('pOpsyen').textContent = g.opsyen;
-            document.getElementById('pPengurusan').innerHTML = formatT(g.tPeng);
-            document.getElementById('pKuri').innerHTML = formatT(g.tKuri); 
-            document.getElementById('pHEM').innerHTML = formatT(g.tHEM);
-            document.getElementById('pKoku').innerHTML = formatT(g.tKoku);
             
+            // ISI TAB INFO AM
+            let htmlInfo = buatBar('GRED JAWATAN', g.gred, 'fa-award', 'Info');
+            htmlInfo += buatBar('ID DELIMA', g.delima, 'fa-envelope-open-text', 'Info');
+            htmlInfo += buatBar('OPSYEN DOMINAN', g.opsyen, 'fa-book-bookmark', 'Info');
+            document.getElementById('Info').innerHTML = htmlInfo;
+
+            // ISI TAB LAIN (AUTO SPLIT KOTAK)
+            document.getElementById('Pengurusan').innerHTML = buatBar('TUGAS KHAS (PENGURUSAN)', g.tPeng, 'fa-sitemap', 'Pengurusan');
+            document.getElementById('Kuri').innerHTML = buatBar('TUGAS KHAS (KURIKULUM)', g.tKuri, 'fa-graduation-cap', 'Kuri');
+            document.getElementById('HEM').innerHTML = buatBar('TUGAS KHAS (HEM)', g.tHEM, 'fa-hand-holding-heart', 'HEM');
+            document.getElementById('Koku').innerHTML = buatBar('TUGAS KHAS (KOKU)', g.tKoku, 'fa-running', 'Koku');
+
             let rawUrl = g.foto;
             let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
             if (rawUrl.includes('drive.google.com')) {
