@@ -40,19 +40,10 @@
 </head>
 <body>
 <div class="container">
-    <div id="headerDepan">
-        <img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo">
-        <h2>PORTAL GURU DAN STAFF<br>SK TELOK BEREMBANG</h2>
-    </div>
-    <select id="namaDropdown" onchange="pilihGuru()">
-        <option value="">-- PILIH NAMA GURU --</option>
-    </select>
+    <div id="headerDepan"><img src="https://cdn-icons-png.flaticon.com/512/2830/2830302.png" class="school-logo"><h2>PORTAL GURU DAN STAFF<br>SK TELOK BEREMBANG</h2></div>
+    <select id="namaDropdown" onchange="pilihGuru()"><option value="">-- PILIH NAMA GURU --</option></select>
     <div id="resultCard">
-        <div class="profile-header">
-            <img id="pGambar" src="" class="profile-img">
-            <div id="pNama" class="teacher-name"></div>
-            <div id="pJawatan" class="teacher-role"></div>
-        </div>
+        <div class="profile-header"><img id="pGambar" src="" class="profile-img"><div id="pNama" class="teacher-name"></div><div id="pJawatan" class="teacher-role"></div></div>
         <div class="tabs">
             <button class="tab-btn active" data-tab="Info" onclick="bukaTab(event, 'Info')">INFO AM</button>
             <button class="tab-btn" data-tab="Pengurusan" onclick="bukaTab(event, 'Pengurusan')">PENGURUSAN</button>
@@ -60,11 +51,7 @@
             <button class="tab-btn" data-tab="HEM" onclick="bukaTab(event, 'HEM')">HEM</button>
             <button class="tab-btn" data-tab="Koku" onclick="bukaTab(event, 'Koku')">KOKU</button>
         </div>
-        <div id="Info" class="tab-content active"></div>
-        <div id="Pengurusan" class="tab-content"></div>
-        <div id="Kuri" class="tab-content"></div>
-        <div id="HEM" class="tab-content"></div>
-        <div id="Koku" class="tab-content"></div>
+        <div id="Info" class="tab-content active"></div><div id="Pengurusan" class="tab-content"></div><div id="Kuri" class="tab-content"></div><div id="HEM" class="tab-content"></div><div id="Koku" class="tab-content"></div>
     </div>
 </div>
 <script>
@@ -72,16 +59,13 @@
     let dataGuru = [];
 
     fetch(csvUrl).then(res => res.text()).then(csv => {
-        // Pecahkan baris dengan cara yang lebih bijak (tidak keliru dengan Alt+Enter dalam kotak)
-        const rows = csv.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-        
-        // Guna parser yang lebih stabil untuk CSV Google Sheets
-        const dataRaw = csv.split(/\r?\n/).slice(1);
-        dataRaw.forEach(line => {
+        // Parser yang lebih kuat untuk mengendalikan baris baru di dalam sel
+        const rows = csv.split(/\r?\n(?=(?:(?:[^"]*"){2})*[^"]*$)/).slice(1);
+        rows.forEach(line => {
             const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             if(cols.length > 1) {
                 const namaGuru = c(cols[0]);
-                // KOD KUNCI: Hanya ambil baris yang ada nama guru sahaja
+                // Pastikan hanya ambil baris yang ada nama guru dan bukan baris jawatan tambahan
                 if (namaGuru && namaGuru.length > 3 && !namaGuru.includes('\n')) {
                     dataGuru.push({
                         nama: namaGuru, jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
@@ -90,26 +74,21 @@
                 }
             }
         });
-        
         dataGuru.sort((a,b) => a.nama.localeCompare(b.nama));
         const dd = document.getElementById('namaDropdown');
         dataGuru.forEach(g => { const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); });
     });
 
-    function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
+    function c(t) { return t ? t.replace(/^"|"$/g, '').replace(/""/g, '"').trim() : ''; }
 
     function buatBar(tajuk, teks, icon, tabName) {
         if(!teks || teks === '-' || teks === "" || teks.includes('drive.google.com')) return '';
-        // Pecahkan ikut baris baru (Alt+Enter)
         const listTeks = teks.split(/\n/); 
         let html = '';
         listTeks.forEach(item => {
             let bersih = item.trim();
             if(bersih !== ""){
-                html += `<div class="info-item color-${tabName}">
-                    <div class="icon-box"><div style="width:20px; text-align:center;"><i class="fas ${icon}"></i></div></div>
-                    <div class="info-text"><small>${tajuk}</small><span>${bersih}</span></div>
-                </div>`;
+                html += `<div class="info-item color-${tabName}"><div class="icon-box"><i class="fas ${icon}"></i></div><div class="info-text"><small>${tajuk}</small><span>${bersih}</span></div></div>`;
             }
         });
         return html;
@@ -123,13 +102,11 @@
             document.getElementById('resultCard').style.display = 'block';
             document.getElementById('pNama').textContent = g.nama;
             document.getElementById('pJawatan').textContent = g.jawatan;
-            
             document.getElementById('Info').innerHTML = buatBar('GRED JAWATAN', g.gred, 'fa-award', 'Info') + buatBar('ID DELIMA', g.delima, 'fa-envelope-open-text', 'Info') + buatBar('OPSYEN DOMINAN', g.opsyen, 'fa-book-bookmark', 'Info');
             document.getElementById('Pengurusan').innerHTML = buatBar('TUGAS KHAS (PENGURUSAN)', g.tPeng, 'fa-sitemap', 'Pengurusan');
             document.getElementById('Kuri').innerHTML = buatBar('TUGAS KHAS (KURIKULUM)', g.tKuri, 'fa-graduation-cap', 'Kuri');
             document.getElementById('HEM').innerHTML = buatBar('TUGAS KHAS (HEM)', g.tHEM, 'fa-hand-holding-heart', 'HEM');
             document.getElementById('Koku').innerHTML = buatBar('TUGAS KHAS (KOKU)', g.tKoku, 'fa-running', 'Koku');
-
             let rawUrl = g.foto;
             let finalImg = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
             if (rawUrl.includes('drive.google.com')) {
