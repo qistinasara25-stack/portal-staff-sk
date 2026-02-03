@@ -27,21 +27,15 @@
         .tab-btn.active { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); border-bottom: 4px solid currentColor; opacity: 1; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        /* GAYA KOTAK (BAR) JAWATAN */
-        .info-item { display: flex; align-items: center; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); animation: slideIn 0.3s ease; }
-        
+        .info-item { display: flex; align-items: center; padding: 20px; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); }
         .info-item.color-Info { background: linear-gradient(135deg, #ffffff 0%, #e0d4f7 100%); border-left: 8px solid #6f42c1; }
         .info-item.color-Pengurusan { background: linear-gradient(135deg, #ffffff 0%, #d4e3f7 100%); border-left: 8px solid #007bff; }
         .info-item.color-Kuri { background: linear-gradient(135deg, #ffffff 0%, #f7d4e3 100%); border-left: 8px solid #d63384; }
         .info-item.color-HEM { background: linear-gradient(135deg, #ffffff 0%, #d4f7f2 100%); border-left: 8px solid #17a2b8; }
         .info-item.color-Koku { background: linear-gradient(135deg, #ffffff 0%, #f7f1d4 100%); border-left: 8px solid #856404; }
-
         .icon-box { margin-right: 20px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: white; font-size: 1.3rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         .info-text small { display: block; font-size: 0.75rem; color: #666; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
         .info-text span { font-size: 1rem; font-weight: 700; color: #222; line-height: 1.4; }
-        
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
@@ -76,13 +70,18 @@
 <script>
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsvip67QwGzy2gu0coChpig9r2ZMzw6Hi6kHGnVh4m9woeC8IdZWm76AiT1kS2ugsWT3AIGNnatuBj/pub?output=csv';
     let dataGuru = [];
+
     fetch(csvUrl).then(res => res.text()).then(csv => {
         const rows = csv.split('\n').slice(1);
         rows.forEach(row => {
             const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             if(cols.length > 1) {
+                const namaBaru = c(cols[0]);
+                // JIKA NAMA KOSONG (SEBAB CIKGU TAMBAH BARIS BAWAH), KITA ABAIKAN
+                if (!namaBaru || namaBaru === "" || namaBaru.length < 3) return;
+
                 dataGuru.push({
-                    nama: c(cols[0]), jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
+                    nama: namaBaru, jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
                     tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoku: c(cols[9]), foto: c(cols[10])
                 });
             }
@@ -91,18 +90,19 @@
         const dd = document.getElementById('namaDropdown');
         dataGuru.forEach(g => { const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); });
     });
+
     function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
 
-    // FUNGSI CIPTA KOTAK BARU UNTUK SETIAP JAWATAN:
     function buatBar(tajuk, teks, icon, tabName) {
-        if(!teks || teks === '-') return '';
-        const listTeks = teks.split('\n'); // Pecahkan ikut baris baru (Alt+Enter)
+        if(!teks || teks === '-' || teks === "") return '';
+        // Pecahkan ikut baris baru (Alt+Enter)
+        const listTeks = teks.split(/\n/); 
         let html = '';
         listTeks.forEach(item => {
             if(item.trim() !== ""){
                 html += `<div class="info-item color-${tabName}">
                     <div class="icon-box"><i class="fas ${icon}"></i></div>
-                    <div class="info-text"><small>${tajuk}</small><span>${item}</span></div>
+                    <div class="info-text"><small>${tajuk}</small><span>${item.trim()}</span></div>
                 </div>`;
             }
         });
@@ -118,13 +118,7 @@
             document.getElementById('pNama').textContent = g.nama;
             document.getElementById('pJawatan').textContent = g.jawatan;
             
-            // ISI TAB INFO AM
-            let htmlInfo = buatBar('GRED JAWATAN', g.gred, 'fa-award', 'Info');
-            htmlInfo += buatBar('ID DELIMA', g.delima, 'fa-envelope-open-text', 'Info');
-            htmlInfo += buatBar('OPSYEN DOMINAN', g.opsyen, 'fa-book-bookmark', 'Info');
-            document.getElementById('Info').innerHTML = htmlInfo;
-
-            // ISI TAB LAIN (AUTO SPLIT KOTAK)
+            document.getElementById('Info').innerHTML = buatBar('GRED JAWATAN', g.gred, 'fa-award', 'Info') + buatBar('ID DELIMA', g.delima, 'fa-envelope-open-text', 'Info') + buatBar('OPSYEN DOMINAN', g.opsyen, 'fa-book-bookmark', 'Info');
             document.getElementById('Pengurusan').innerHTML = buatBar('TUGAS KHAS (PENGURUSAN)', g.tPeng, 'fa-sitemap', 'Pengurusan');
             document.getElementById('Kuri').innerHTML = buatBar('TUGAS KHAS (KURIKULUM)', g.tKuri, 'fa-graduation-cap', 'Kuri');
             document.getElementById('HEM').innerHTML = buatBar('TUGAS KHAS (HEM)', g.tHEM, 'fa-hand-holding-heart', 'HEM');
