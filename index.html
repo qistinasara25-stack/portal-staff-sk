@@ -72,20 +72,25 @@
     let dataGuru = [];
 
     fetch(csvUrl).then(res => res.text()).then(csv => {
-        const rows = csv.split('\n').slice(1);
-        rows.forEach(row => {
-            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        // Pecahkan baris dengan cara yang lebih bijak (tidak keliru dengan Alt+Enter dalam kotak)
+        const rows = csv.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+        
+        // Guna parser yang lebih stabil untuk CSV Google Sheets
+        const dataRaw = csv.split(/\r?\n/).slice(1);
+        dataRaw.forEach(line => {
+            const cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             if(cols.length > 1) {
-                const namaBaru = c(cols[0]);
-                // JIKA NAMA KOSONG (SEBAB CIKGU TAMBAH BARIS BAWAH), KITA ABAIKAN
-                if (!namaBaru || namaBaru === "" || namaBaru.length < 3) return;
-
-                dataGuru.push({
-                    nama: namaBaru, jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
-                    tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoku: c(cols[9]), foto: c(cols[10])
-                });
+                const namaGuru = c(cols[0]);
+                // KOD KUNCI: Hanya ambil baris yang ada nama guru sahaja
+                if (namaGuru && namaGuru.length > 3 && !namaGuru.includes('\n')) {
+                    dataGuru.push({
+                        nama: namaGuru, jawatan: c(cols[2]), gred: c(cols[3]), opsyen: c(cols[4]), delima: c(cols[5]), 
+                        tPeng: c(cols[6]), tKuri: c(cols[7]), tHEM: c(cols[8]), tKoku: c(cols[9]), foto: c(cols[10])
+                    });
+                }
             }
         });
+        
         dataGuru.sort((a,b) => a.nama.localeCompare(b.nama));
         const dd = document.getElementById('namaDropdown');
         dataGuru.forEach(g => { const opt = document.createElement('option'); opt.value = g.nama; opt.textContent = g.nama; dd.appendChild(opt); });
@@ -94,15 +99,16 @@
     function c(t) { return t ? t.replace(/^"|"$/g, '').trim() : ''; }
 
     function buatBar(tajuk, teks, icon, tabName) {
-        if(!teks || teks === '-' || teks === "") return '';
+        if(!teks || teks === '-' || teks === "" || teks.includes('drive.google.com')) return '';
         // Pecahkan ikut baris baru (Alt+Enter)
         const listTeks = teks.split(/\n/); 
         let html = '';
         listTeks.forEach(item => {
-            if(item.trim() !== ""){
+            let bersih = item.trim();
+            if(bersih !== ""){
                 html += `<div class="info-item color-${tabName}">
-                    <div class="icon-box"><i class="fas ${icon}"></i></div>
-                    <div class="info-text"><small>${tajuk}</small><span>${item.trim()}</span></div>
+                    <div class="icon-box"><div style="width:20px; text-align:center;"><i class="fas ${icon}"></i></div></div>
+                    <div class="info-text"><small>${tajuk}</small><span>${bersih}</span></div>
                 </div>`;
             }
         });
